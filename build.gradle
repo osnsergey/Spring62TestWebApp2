@@ -1,0 +1,57 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+}
+
+apply from: './libs.gradle'
+
+ext.LIB_DIR = "$rootDir/libs"
+
+wrapper {
+    gradleVersion = '7.6.3'
+    archiveBase = Wrapper.PathBase.PROJECT
+    archivePath = 'gradle/wrapper/dists'
+    distributionBase = Wrapper.PathBase.PROJECT
+    distributionPath = 'gradle/wrapper/dists'
+    distributionUrl = 'https\\://services.gradle.org/distributions/gradle-7.6.3-all.zip'
+}
+
+// ================== Common subprojects config ==================================
+subprojects {
+    apply plugin: 'java'
+
+    repositories {
+        mavenCentral()
+    }
+
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+    
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+        options.compilerArgs << '-parameters'
+    }
+}
+// ================== Common subprojects config end ==============================
+
+ext.findJarByName = {config, artifactName ->
+    findJar(config, {artifact -> artifact.moduleVersion.id.name.equals(artifactName)})
+}
+
+ext.findJarByGroup = {config, groupName ->
+    findJar(config, {artifact -> artifact.moduleVersion.id.group.equals(groupName)})
+}
+
+/*
+Predicate gets artifact as parameter.
+You can use following artifact properties to filter jars:
+        artifact.moduleVersion.id.group
+        artifact.moduleVersion.id.name
+        artifact.moduleVersion.id.version
+*/
+static def findJar(Configuration config, Closure<Boolean> predicate) {
+    config.resolvedConfiguration.resolvedArtifacts.find { artifact ->
+        predicate(artifact)
+    }.file
+}

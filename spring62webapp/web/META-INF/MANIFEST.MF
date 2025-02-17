@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+Implementation-Version: 1.0
+Specification-Title: Test App
+Created-By: 1.5.0_07-b03 (Sun Microsystems Inc.)
+Implementation-Vendor: Copyright (C)
+

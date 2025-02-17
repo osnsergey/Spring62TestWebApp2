@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Setting metadata-complete="true" disables scanning web application and its libraries for classes that use annotations
+	 to define components of a web application (Servlets etc.). -->
+<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	metadata-complete="true">
+
+	<!-- The <absolute-ordering> element specifies which web fragment JARs
+		 (according to the names in their WEB-INF/web-fragment.xml files)
+		 have to be scanned for SCIs, fragments and annotations.
+		 An empty <absolute-ordering/> element configures that none are to be scanned. -->
+	<absolute-ordering />
+
+	<description>Test App</description>
+	<display-name>Test App</display-name>
+	
+    <!-- all java exceptions -->
+    <error-page>
+        <exception-type>java.lang.Throwable</exception-type>
+        <location>/ui/error.html</location>
+    </error-page>
+
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
+	
+	<context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>
+			/WEB-INF/applicationContext.xml
+        </param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>spActivityReportingMode</param-name>
+		<param-value>server_based</param-value>
+	</context-param>
+	
+	<filter>
+		<description>Force encoding to get correct results of sorting
+		Global Task List with fields containing non-ASCII characters.
+		</description>
+		<filter-name>EncodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<async-supported>true</async-supported>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>			
+		</init-param>
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	
+	<filter-mapping>
+		<filter-name>EncodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<filter>
+		<filter-name>HttpHeaderSecurityFilter</filter-name>
+		<filter-class>org.apache.catalina.filters.HttpHeaderSecurityFilter</filter-class>
+		<init-param>
+			<param-name>hstsEnabled</param-name>
+			<param-value>false</param-value>
+		</init-param>
+		<init-param>
+			<param-name>antiClickJackingEnabled</param-name>
+			<param-value>true</param-value>
+		</init-param>
+		<init-param>
+			<param-name>antiClickJackingOption</param-name>
+			<param-value>SAMEORIGIN</param-value>
+		</init-param>
+		<init-param>
+			<param-name>blockContentTypeSniffingEnabled</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>HttpHeaderSecurityFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+				
+	<listener>
+		<listener-class>
+			org.springframework.web.context.ContextLoaderListener
+		</listener-class>
+	</listener>
+
+	<listener>
+		<listener-class>
+			org.springframework.web.context.request.RequestContextListener
+		</listener-class>
+	</listener>
+</web-app>

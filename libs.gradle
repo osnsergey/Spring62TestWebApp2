@@ -1,0 +1,77 @@
+project.ext.slf4jVersion = '2.0.12'
+project.ext.jacksonVersion = '2.16.1'
+//project.ext.springVersion = '6.1.16'
+project.ext.springVersion = '6.2.2'
+project.ext.springBootVersion = '3.0.13'
+project.ext.springSecurityVersion = '6.3.6'
+project.ext.tomcatEmbedVersion = '10.1.34'
+project.ext.xercesVersion = "2.12.2"
+
+ext.libs = [
+
+        apacheHttp: [
+                'org.apache.httpcomponents:httpclient:4.5.14',
+                'org.apache.httpcomponents:httpcore:4.4.16'
+        ],
+
+        commons: [
+                'commons-io:commons-io:2.15.1',
+                'commons-lang:commons-lang:2.6',
+                'org.apache.commons:commons-collections4:4.4',
+        ],
+
+        jackson: [
+                "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}",
+                "com.fasterxml.jackson.datatype:jackson-datatype-guava:${jacksonVersion}",
+                "com.fasterxml.jackson.datatype:jackson-datatype-joda:${jacksonVersion}",
+        ],
+
+        jakarta: [
+                'jakarta.annotation:jakarta.annotation-api:3.0.0',
+                'jakarta.validation:jakarta.validation-api:3.0.2',
+                'jakarta.servlet:jakarta.servlet-api:6.1.0',
+                'jakarta.xml.bind:jakarta.xml.bind-api:4.0.2',
+                'com.sun.xml.bind:jaxb-impl:4.0.5'
+        ],
+
+        jacksonJakarta: [
+                'com.fasterxml.jackson.jakarta.rs:jackson-jakarta-rs-json-provider:${jacksonVersion}'
+        ],
+
+        logback: [
+                "ch.qos.logback:logback-classic:1.4.14",
+                "ch.qos.logback:logback-core:1.4.14",
+                "org.slf4j:log4j-over-slf4j:2.0.12"
+        ],
+
+        slf4j: [
+                "org.slf4j:slf4j-api:${slf4jVersion}",
+                "org.slf4j:slf4j-log4j12:${slf4jVersion}"
+        ],
+
+        spring: [
+                "org.springframework:spring-context:${springVersion}",
+                "org.springframework:spring-context-support:${springVersion}",
+                "org.springframework:spring-web:${springVersion}",
+                "org.springframework:spring-webmvc:${springVersion}"
+        ],
+
+        springBoot: [
+                "org.springframework.boot:spring-boot-loader:${springBootVersion}"
+        ],
+
+        springSecurity: [
+                "org.springframework.security:spring-security-config:${springSecurityVersion}",
+                "org.springframework.security:spring-security-core:${springSecurityVersion}",
+                "org.springframework.security:spring-security-web:${springSecurityVersion}"
+        ],
+
+        tomcatEmbed: [
+                "org.apache.tomcat.embed:tomcat-embed-core:${tomcatEmbedVersion}",
+                "org.apache.tomcat.embed:tomcat-embed-el:${tomcatEmbedVersion}"
+        ],
+
+        xerces: [
+                "xerces:xercesImpl:${xercesVersion}"
+        ]
+]

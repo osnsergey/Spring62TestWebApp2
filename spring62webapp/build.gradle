@@ -1,0 +1,92 @@
+
+def binPath = "${resultPath}/release"
+def templatesPath = "${resultPath}/templates"
+def tomcatLibPath = "${binPath}/lib"
+
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
+
+sourceSets {
+    main
+            {
+                resources
+                        {
+                            srcDir 'src/main/java'
+                            exclude ("logback.xml")
+                        }
+            }
+}
+
+task cleanDist(type: Delete) {
+    description = 'Deletes distribution directories'
+    delete resultPath
+}
+clean.dependsOn('cleanDist')
+
+dependencies {
+    implementation libs.slf4j
+    implementation libs.commons
+    implementation libs.logback
+    implementation libs.xerces
+
+    implementation libs.apacheHttp
+    implementation libs.jackson
+    implementation libs.jacksonJakarta
+    implementation libs.jakarta
+    implementation libs.springBoot
+    implementation libs.spring
+    implementation libs.springSecurity
+    implementation libs.tomcatEmbed
+}
+
+processResources {
+    from(configurations.compileClasspath.files) {
+        into 'WEB-INF/lib'
+        include "**/*.jar"
+    }
+
+    from('web')
+
+    from(zipTree(findJarByName(configurations.runtimeClasspath, 'spring-boot-loader'))){
+        exclude "**/META-INF/**/*"
+    }
+}
+
+jar {
+    includeEmptyDirs = false
+
+    //All classes except those which needed to launch app, should be in WEB-INF/classes
+    //Also security.xml and ValidationMessages.properties should be there
+    eachFile { details ->
+            if (details.path.matches("(com|xml)(?!.*app/runner/JarLauncher).*") ||
+                    details.path.matches("security\\.xml")) {
+                details.path = "/WEB-INF/classes/$details.path"
+            } else if (details.path.matches("(applicationContext\\.xml)")) {
+                details.path = "/WEB-INF/$details.path"
+            }
+    }
+    //Nested jars shouldn't be compressed
+    entryCompression = ZipEntryCompression.STORED
+    manifest {
+        attributes("Specification-Title": "Test App",
+                "Main-Class": "com.test.app.runner.JarLauncher",
+                "Start-Class": "com.test.app.runner.AppRunner",
+                "Class-Path": ". ./config/",
+                "Implementation-Version": appVersion,
+                "Implementation-Vendor": "Copyright (C)"
+        )
+    }
+}
+
+task distJar(type: Copy) {
+    description = 'Assembles jar and copies it to distribution directory'
+    from jar.destinationDir
+    into binPath
+}
+
+task release {
+    description = 'Assembles jar and builds distribution directory'
+    group = 'build'
+    dependsOn build
+    dependsOn distJar
+}
