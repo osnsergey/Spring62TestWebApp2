@@ -29,6 +29,8 @@ dependencies {
     implementation libs.logback
     implementation libs.xerces
 
+    implementation LOCALIZATION
+
     implementation libs.apacheHttp
     implementation libs.jackson
     implementation libs.jacksonJakarta

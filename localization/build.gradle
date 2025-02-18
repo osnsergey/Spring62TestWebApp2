@@ -1,0 +1,14 @@
+jar {
+    manifest {
+        attributes(
+                "Specification-Title": "Localization",
+                "Class-Path": "",
+                "Implementation-Version": "1.0",
+                "Implementation-Vendor": "Copyright (C)"
+        )
+    }
+}
+
+dependencies {
+    implementation libs.spring
+}

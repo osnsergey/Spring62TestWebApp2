@@ -6,6 +6,8 @@ buildscript {
 
 apply from: './libs.gradle'
 
+ext.LOCALIZATION = project(':localization')
+
 ext.LIB_DIR = "$rootDir/libs"
 
 wrapper {

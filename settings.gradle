@@ -5,4 +5,5 @@ pluginManagement {
     }
 }
 
+include 'localization'
 include 'spring62webapp'
